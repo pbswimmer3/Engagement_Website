@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply bg-cream text-dark scroll-smooth;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-serif;
+  }
+}
+
+@layer utilities {
+  .marquee-track {
+    @apply flex w-max animate-marquee;
+  }
+
+  .marquee-track:hover {
+    animation-play-state: paused;
+  }
+}
