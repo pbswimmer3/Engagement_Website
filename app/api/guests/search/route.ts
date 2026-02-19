@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
     const supabase = createAdminClient()
 
     // Search individual words so "John Smith" matches first OR last name
-    const words = [...new Set([term, ...term.split(/\s+/).filter((w) => w.length >= 2)])]
+    const words = Array.from(new Set([term, ...term.split(/\s+/).filter((w) => w.length >= 2)]))
 
     // Build results from each word, searching both columns
     const searches = await Promise.all(
