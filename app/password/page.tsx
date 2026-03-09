@@ -1,13 +1,11 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
 
 export default function PasswordPage() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  const router = useRouter()
 
   async function submit() {
     if (!password) return
@@ -20,8 +18,8 @@ export default function PasswordPage() {
         body: JSON.stringify({ password }),
       })
       if (res.ok) {
-        router.push('/')
-        router.refresh()
+        // Hard navigation so the root layout (Navbar, fonts) loads cleanly
+        window.location.href = '/'
       } else {
         setError('Incorrect password. Please try again.')
         setLoading(false)

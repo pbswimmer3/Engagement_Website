@@ -23,7 +23,7 @@ const lato = Lato({
 export default function PasswordLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${cormorant.variable} ${greatVibes.variable} ${lato.variable}`}>
-      <body className="bg-cream font-sans text-dark min-h-screen">{children}</body>
+      <body className="font-sans text-dark min-h-screen">{children}</body>
     </html>
   )
 }

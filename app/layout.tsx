@@ -33,7 +33,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       lang="en"
       className={`${cormorant.variable} ${greatVibes.variable} ${lato.variable}`}
     >
-      <body className="bg-cream font-sans text-dark min-h-screen">
+      <body className="font-sans text-dark min-h-screen">
         <Navbar />
         <main>{children}</main>
       </body>
