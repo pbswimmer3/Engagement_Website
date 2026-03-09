@@ -14,7 +14,7 @@ export default function HomePage() {
     <>
       {/* Hero */}
       <section className="min-h-screen flex flex-col items-center justify-center text-center px-6 pt-16">
-        <p className="font-sans text-6xl uppercase tracking-[0.5em] text-gold mb-8">
+        <p className="font-sans text-6xl uppercase tracking-[0.5em] text-gold mb-16">
           Engagement Celebration
         </p>
 

@@ -118,7 +118,7 @@ export default function TravelPage() {
                 <p className="font-serif text-base text-dark leading-snug mb-1">{airport.name}</p>
                 <p className="font-sans text-xs text-dark/50 mb-1">{airport.distance}</p>
                 {airport.note && (
-                  <p className="font-serif text-xs text-gold italic">{airport.note}</p>
+                  <p className="font-serif text-sm text-gold italic">{airport.note}</p>
                 )}
               </div>
             ))}
