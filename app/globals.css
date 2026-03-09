@@ -2,16 +2,53 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+ * ─── FONT SIZE SCALING ──────────────────────────────────────────────────────
+ * Setting font-size on the html element scales ALL rem-based sizes site-wide,
+ * because Tailwind uses rem units (text-xl, text-2xl, etc.) that are relative
+ * to this root value. The browser default is 16px (= 1rem).
+ *
+ * HOW TO ADJUST:
+ *   112% → 1rem = ~17.9px  (current — ~12% larger than default)
+ *   115% → 1rem = ~18.4px  (slightly larger)
+ *   100% → 1rem = 16px     (browser default — restores original sizing)
+ *   To make text bigger: increase the percentage.
+ *   To make text smaller: decrease the percentage.
+ *   No other changes are needed — the cascade handles everything.
+ *
+ * HEADER WEIGHT:
+ *   h1–h4 are set to font-bold (700) in the base layer below.
+ *   For even heavier headers change font-bold → font-extrabold (800).
+ * ────────────────────────────────────────────────────────────────────────────
+ */
+
 @layer base {
   html {
+    font-size: 112%;
     @apply bg-cream text-dark scroll-smooth;
   }
 
-  h1,
-  h2,
-  h3,
-  h4 {
-    @apply font-serif;
+  h1, h2, h3, h4 {
+    @apply font-serif font-bold;
+  }
+
+  /*
+   * BACKGROUND IMAGE
+   * A fixed pseudo-element at 12% opacity adds a subtle romantic texture.
+   * Swap the image: replace public/assets/bg-main.jpg with any JPEG/PNG/WebP.
+   * Adjust opacity: change the value below (0.05 = nearly invisible, 0.25 = noticeable).
+   * Remove entirely: delete this body::before block.
+   */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url('/assets/bg-main.jpg');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.12;
+    z-index: -1;
+    pointer-events: none;
   }
 }
 
@@ -19,7 +56,6 @@
   .marquee-track {
     @apply flex w-max animate-marquee;
   }
-
   .marquee-track:hover {
     animation-play-state: paused;
   }

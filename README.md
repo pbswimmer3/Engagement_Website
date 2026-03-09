@@ -17,7 +17,9 @@ Hosted on Vercel, with guest data stored in Supabase.
 8. [Viewing RSVP responses](#8-viewing-rsvp-responses)
 9. [How to push changes live](#9-how-to-push-changes-live)
 10. [Custom domain (optional)](#10-custom-domain-optional)
-11. [File map — what does what](#11-file-map--what-does-what)
+11. [Password Protection](#11-password-protection)
+12. [Background Image](#12-background-image)
+13. [File map — what does what](#13-file-map--what-does-what)
 
 ---
 
@@ -301,22 +303,69 @@ If you want a custom domain like `pradananya.com`:
 
 ---
 
-## 11. File map — what does what
+## 11. Password Protection
+
+The site is protected by a password gate. Guests are redirected to `/password` before they can access any page.
+
+**How it works:**
+- `middleware.ts` at the project root intercepts all requests and checks for a `site-auth` cookie
+- If the cookie is missing, the visitor is redirected to `/password`
+- On the password page, the guest enters the password from their invitation
+- The password is verified by `app/api/auth/route.ts` — if correct, a session cookie is set and the guest enters the site
+
+**Setting the password:**
+- The password is controlled by the `SITE_PASSWORD` environment variable
+- It falls back to `Forever2026` if the variable is not set
+- To change it locally: edit `.env.local` → `SITE_PASSWORD=YourPassword`
+- To change it on Vercel: go to Project → Settings → Environment Variables → add/update `SITE_PASSWORD`
+
+**Paths that bypass the gate (always public):**
+- `/password` — the gate itself
+- `/api/auth` — the password verification endpoint
+- `/_next/`, `/assets/`, `/photos/` — static assets
+
+**Cookie persistence:** By default the cookie is session-scoped (expires when the browser closes). To make guests stay logged in for 30 days, uncomment the `maxAge` line in `app/api/auth/route.ts`.
+
+---
+
+## 12. Background Image
+
+A faint background texture is displayed behind all pages using a CSS pseudo-element.
+
+**To swap the image:** Replace `public/assets/bg-main.jpg` with any JPEG, PNG, or WebP file (keep the same filename, or update the path in `app/globals.css`).
+
+**To adjust the opacity:** In `app/globals.css`, find the `body::before` block and change the `opacity` value:
+- `0.05` — nearly invisible
+- `0.12` — current setting (subtle)
+- `0.25` — clearly visible
+
+**To remove it entirely:** Delete the `body::before` block in `app/globals.css`.
+
+---
+
+## 13. File map — what does what
 
 ```
 Engagement-Website/
 │
+├── middleware.ts             ← Password gate (redirects unauthenticated visitors)
+│
 ├── app/
 │   ├── page.tsx              ← Welcome page (update EVENT details here)
 │   ├── rsvp/page.tsx         ← RSVP page (3-step flow, no edits needed)
-│   ├── travel/page.tsx       ← Travel page (update VENUE and TRAVEL_TIPS here)
+│   ├── travel/page.tsx       ← Travel page (update VENUE, HOTELS, AIRPORTS here)
 │   ├── faq/page.tsx          ← FAQ page (update FAQS array here)
 │   ├── layout.tsx            ← Shared layout, fonts, page title
-│   ├── globals.css           ← Global styles and animations
-│   └── api/guests/
-│       ├── search/route.ts   ← API: searches guest list by name
-│       ├── verify/route.ts   ← API: checks guest email matches
-│       └── rsvp/route.ts     ← API: saves RSVP status to database
+│   ├── globals.css           ← Global styles, font scaling, background image
+│   ├── password/
+│   │   ├── layout.tsx        ← Bare layout for password page (no Navbar)
+│   │   └── page.tsx          ← Styled password entry form
+│   └── api/
+│       ├── auth/route.ts     ← API: verifies site password, sets cookie
+│       └── guests/
+│           ├── search/route.ts   ← API: searches guest list by name
+│           ├── verify/route.ts   ← API: checks guest email matches
+│           └── rsvp/route.ts     ← API: saves RSVP status to database
 │
 ├── components/
 │   ├── Navbar.tsx            ← Top navigation bar
@@ -326,12 +375,14 @@ Engagement-Website/
 │   └── supabase.ts           ← Supabase database client
 │
 ├── public/
+│   ├── assets/
+│   │   └── bg-main.jpg       ← Background image (swap to change the texture)
 │   └── photos/               ← Drop your photo files here
 │
 ├── supabase/
 │   └── schema.sql            ← Run this once in Supabase SQL Editor to set up DB
 │
-├── .env.local                ← Your private Supabase keys (never commit this)
+├── .env.local                ← Your private keys (never commit this)
 ├── .env.local.example        ← Template showing which keys are needed
 └── tailwind.config.ts        ← Colour palette and fonts
 ```

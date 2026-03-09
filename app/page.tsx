@@ -30,23 +30,17 @@ export default function HomePage() {
         </div>
 
         <div className="space-y-2">
-          <p className="font-serif text-2xl font-light text-dark/75">{EVENT.date}</p>
-          <p className="font-serif text-xl text-dark/60">{EVENT.time}</p>
-          <p className="font-serif text-lg text-dark/50 mt-6">{EVENT.venue}</p>
-          <p className="font-serif text-base text-dark/40">{EVENT.address}</p>
-        </div>
-
-        {/* Scroll hint */}
-        <div className="absolute bottom-10 flex flex-col items-center gap-2 text-dark/30">
-          <span className="font-sans text-xs uppercase tracking-widest">Our Story</span>
-          <span className="block w-px h-8 bg-gold/40" />
+          <p className="font-serif text-4xl font-light text-dark/75">{EVENT.date}</p>
+          <p className="font-serif text-3xl text-dark/60">{EVENT.time}</p>
+          <p className="font-serif text-2xl text-dark/50 mt-6">{EVENT.venue}</p>
+          <p className="font-serif text-xl text-dark/40">{EVENT.address}</p>
         </div>
       </section>
 
       {/* Photo Gallery */}
       <section className="py-20 bg-rose-light overflow-hidden">
         <h2 className="font-serif text-3xl text-center text-dark/50 italic mb-12">
-          A Glimpse of Our Story
+          A Glimpse of Us
         </h2>
         <PhotoGallery />
       </section>

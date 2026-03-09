@@ -1,8 +1,9 @@
+import { Building2, Plane } from 'lucide-react'
+
 // ─── UPDATE THESE VALUES ──────────────────────────────────────────────────────
 const VENUE = {
   name: 'Majestic Banquet Events',
   address: '4175 Inland Empire Boulevard, Ontario, CA, USA',
-  airportInfo: 'The venue is very close to Ontario International Airport (7-minute drive), so for our out of town guests, we recommend flying into ONT. There are a lot of other options as well though, namely Orange County John Wayne Airport (SNA - 45mi), Long Beach Airport (LGB - 53 mi), Burbank Airport (BUR - 53 mi), and Los Angeles International Airport (LAX - 58mi. This is the farthest from the venue, but will be easiest for our international guests.).',
 
   // HOW TO GET YOUR GOOGLE MAPS EMBED URL:
   // 1. Go to maps.google.com and search for your venue address
@@ -12,11 +13,23 @@ const VENUE = {
   googleMapsEmbedUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6609.781279245813!2d-117.56362442301271!3d34.072317573149455!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80c335021953e55b%3A0x6e95cea2da345ea7!2sMajestic%20Banquet%20%26%20Events!5e0!3m2!1sen!2sus!4v1773018542339!5m2!1sen!2sus',
 }
 
-const TRAVEL_TIPS = [
-  {
-    title: 'Nearby Hotels',
-    body: 'There are plenty of hotels within a mile of the venue. Some of these include: Ayres Suites Ontario Mills Mall - Rancho Cucamonga (0.4mi), Homewood Suites by Hilton Ontario-Rancho Cucamonga (0.8mi), Courtyard by Marriot  Ontario Rancho Cucamonga (0.9mi), and about a dozen others.',
-  },
+const HOTELS = [
+  { name: 'Ayres Suites Ontario Mills Mall', distance: '0.4 mi',
+    mapsUrl: 'https://maps.google.com/?q=Ayres+Suites+Ontario+Mills+Mall+Rancho+Cucamonga' },
+  { name: 'Homewood Suites by Hilton Ontario-Rancho Cucamonga', distance: '0.8 mi',
+    mapsUrl: 'https://maps.google.com/?q=Homewood+Suites+by+Hilton+Ontario+Rancho+Cucamonga' },
+  { name: 'Courtyard by Marriott Ontario Rancho Cucamonga', distance: '0.9 mi',
+    mapsUrl: 'https://maps.google.com/?q=Courtyard+Marriott+Ontario+Rancho+Cucamonga' },
+]
+
+const AIRPORTS = [
+  { name: 'Ontario International Airport', code: 'ONT', distance: '7 min drive',
+    note: 'Closest — recommended for out-of-town guests' },
+  { name: 'Orange County John Wayne Airport', code: 'SNA', distance: '45 mi' },
+  { name: 'Long Beach Airport', code: 'LGB', distance: '53 mi' },
+  { name: 'Bob Hope Airport (Burbank)', code: 'BUR', distance: '53 mi' },
+  { name: 'Los Angeles International Airport', code: 'LAX', distance: '58 mi',
+    note: 'Easiest for international guests' },
 ]
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -62,20 +75,54 @@ export default function TravelPage() {
           />
         </div>
 
-        {/* Travel tips grid */}
-        <div className="grid sm:grid-cols-1"> {/*Changed from -cols-3 gap-4 to try to make 1 column*/}
-          {TRAVEL_TIPS.map((tip) => (
-            <div key={tip.title} className="bg-rose-light/60 rounded-2xl p-6">
-              <h3 className="font-serif text-lg text-dark mb-2">{tip.title}</h3>
-              <p className="font-sans text-sm text-dark/55 leading-relaxed">{tip.body}</p>
-            </div>
-          ))}
+        {/* Hotels */}
+        <div className="mb-10">
+          <h2 className="font-serif text-2xl text-dark mb-6">Nearby Hotels</h2>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {HOTELS.map((hotel) => (
+              <div
+                key={hotel.name}
+                className="bg-white border border-gold/25 rounded-2xl p-5 shadow-sm hover:border-gold/50 hover:shadow-md transition-all flex flex-col"
+              >
+                <Building2 className="text-gold mb-3" size={22} />
+                <p className="font-serif text-base text-dark leading-snug mb-1">{hotel.name}</p>
+                <p className="font-sans text-xs text-dark/50 mb-4">{hotel.distance} from venue</p>
+                <a
+                  href={hotel.mapsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-auto font-sans text-xs text-rose hover:underline"
+                >
+                  Book &rarr;
+                </a>
+              </div>
+            ))}
+          </div>
         </div>
 
-        {/* Airport */}
-        <div className="mt-4 bg-gold/10 border border-gold/20 rounded-2xl p-6">
-          <h3 className="font-serif text-lg text-dark mb-2">Parking</h3>
-          <p className="font-sans text-sm text-dark/55 leading-relaxed">{VENUE.airportInfo}</p>
+        {/* Airports */}
+        <div>
+          <h2 className="font-serif text-2xl text-dark mb-6">Nearby Airports</h2>
+          <div className="grid sm:grid-cols-2 gap-4">
+            {AIRPORTS.map((airport) => (
+              <div
+                key={airport.code}
+                className="bg-white border border-gold/25 rounded-2xl p-5 shadow-sm hover:border-gold/50 hover:shadow-md transition-all"
+              >
+                <div className="flex items-center gap-3 mb-2">
+                  <Plane className="text-gold flex-shrink-0" size={20} />
+                  <span className="bg-rose text-cream font-sans text-xs font-bold px-2 py-0.5 rounded-md tracking-wider">
+                    {airport.code}
+                  </span>
+                </div>
+                <p className="font-serif text-base text-dark leading-snug mb-1">{airport.name}</p>
+                <p className="font-sans text-xs text-dark/50 mb-1">{airport.distance}</p>
+                {airport.note && (
+                  <p className="font-serif text-xs text-gold italic">{airport.note}</p>
+                )}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
