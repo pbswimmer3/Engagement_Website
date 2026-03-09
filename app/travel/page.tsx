@@ -1,29 +1,21 @@
 // ─── UPDATE THESE VALUES ──────────────────────────────────────────────────────
 const VENUE = {
-  name: '[Venue Name]',
-  address: '[Full Address, City, Postcode]',
-  parkingInfo: '[Parking details — e.g. "Free parking is available in the venue car park."]',
+  name: 'Majestic Banquet Events',
+  address: '4175 Inland Empire Boulevard, Ontario, CA, USA',
+  airportInfo: 'The venue is very close to Ontario International Airport (7-minute drive), so for our out of town guests, we recommend flying into ONT. There are a lot of other options as well though, namely Orange County John Wayne Airport (SNA - 45mi), Long Beach Airport (LGB - 53 mi), Burbank Airport (BUR - 53 mi), and Los Angeles International Airport (LAX - 58mi. This is the farthest from the venue, but will be easiest for our international guests.).',
 
   // HOW TO GET YOUR GOOGLE MAPS EMBED URL:
   // 1. Go to maps.google.com and search for your venue address
   // 2. Click Share → Embed a map
   // 3. Copy the src="..." value from the <iframe> code shown
   // 4. Paste it below
-  googleMapsEmbedUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3...',
+  googleMapsEmbedUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6609.781279245813!2d-117.56362442301271!3d34.072317573149455!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80c335021953e55b%3A0x6e95cea2da345ea7!2sMajestic%20Banquet%20%26%20Events!5e0!3m2!1sen!2sus!4v1773018542339!5m2!1sen!2sus',
 }
 
 const TRAVEL_TIPS = [
   {
-    title: 'By Car',
-    body: '[Add driving directions here — e.g. "Exit the M25 at Junction 12, follow signs to..."]',
-  },
-  {
-    title: 'By Train',
-    body: '[Add train info here — e.g. "The nearest station is X, a 10-minute taxi from the venue."]',
-  },
-  {
     title: 'Nearby Hotels',
-    body: '[Add hotel suggestions here — e.g. "Premier Inn X (0.3 miles), Holiday Inn Y (0.5 miles)"]',
+    body: 'There are plenty of hotels within a mile of the venue. Some of these include: Ayres Suites Ontario Mills Mall - Rancho Cucamonga (0.4mi), Homewood Suites by Hilton Ontario-Rancho Cucamonga (0.8mi), Courtyard by Marriot  Ontario Rancho Cucamonga (0.9mi), and about a dozen others.',
   },
 ]
 // ─────────────────────────────────────────────────────────────────────────────
@@ -71,7 +63,7 @@ export default function TravelPage() {
         </div>
 
         {/* Travel tips grid */}
-        <div className="grid sm:grid-cols-3 gap-4">
+        <div className="grid sm:grid-cols-1"> {/*Changed from -cols-3 gap-4 to try to make 1 column*/}
           {TRAVEL_TIPS.map((tip) => (
             <div key={tip.title} className="bg-rose-light/60 rounded-2xl p-6">
               <h3 className="font-serif text-lg text-dark mb-2">{tip.title}</h3>
@@ -80,10 +72,10 @@ export default function TravelPage() {
           ))}
         </div>
 
-        {/* Parking */}
+        {/* Airport */}
         <div className="mt-4 bg-gold/10 border border-gold/20 rounded-2xl p-6">
           <h3 className="font-serif text-lg text-dark mb-2">Parking</h3>
-          <p className="font-sans text-sm text-dark/55 leading-relaxed">{VENUE.parkingInfo}</p>
+          <p className="font-sans text-sm text-dark/55 leading-relaxed">{VENUE.airportInfo}</p>
         </div>
       </div>
     </div>

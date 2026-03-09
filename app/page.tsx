@@ -2,10 +2,10 @@ import PhotoGallery from '@/components/PhotoGallery'
 
 // ─── UPDATE THESE WITH YOUR EVENT DETAILS ────────────────────────────────────
 const EVENT = {
-  date: 'Saturday, [Date]',       // e.g. "Saturday, 12th April 2025"
+  date: 'Saturday, May 30th, 2026',       // e.g. "Saturday, 12th April 2025"
   time: '[Time]',                  // e.g. "6:00 PM onwards"
-  venue: '[Venue Name]',           // e.g. "The Grand Ballroom"
-  address: '[Full Address]',       // e.g. "123 High Street, London, SW1A 1AA"
+  venue: 'Majestic Banquet Events',           // e.g. "The Grand Ballroom"
+  address: '4175 Inland Empire Boulevard, Ontario, CA, USA',       // e.g. "123 High Street, London, SW1A 1AA"
 }
 // ─────────────────────────────────────────────────────────────────────────────
 

@@ -10,11 +10,11 @@ const FAQS = [
   },
   {
     q: 'Is parking available?',
-    a: '[Add parking details here — e.g. "Free parking is available in the venue car park off Main Street."]',
+    a: 'Yes parking will be available, though we encourage guests to uber.',
   },
   {
     q: 'Will food and drinks be served?',
-    a: '[Add catering details — e.g. "Yes! We will be serving a selection of canapés, a sit-down dinner, and drinks throughout the evening."]',
+    a: 'Of course, we have a full catering providing dinner and an open bar throughout the evening.[Add catering details — e.g. "Yes! We will be serving a selection of canapés, a sit-down dinner, and drinks throughout the evening."]',
   },
   {
     q: 'Can I bring a plus one?',
@@ -22,15 +22,7 @@ const FAQS = [
   },
   {
     q: 'When is the RSVP deadline?',
-    a: '[Add deadline — e.g. "Please RSVP by 15th March 2025 so we can plan accordingly. You can RSVP on this website!"]',
-  },
-  {
-    q: 'Are children welcome?',
-    a: '[Add your policy — e.g. "We love children! Little ones are welcome at the celebration." or "This is an adults-only event — we appreciate your understanding."]',
-  },
-  {
-    q: 'How do I contact you?',
-    a: '[Add contact details — e.g. "Feel free to reach out at hello@example.com or text Prad on +44 000 000 0000."]',
+    a: 'Please RSVP by April 1st, 2026 so we can plan accordingly. You can RSVP on this website!"]',
   },
 ]
 // ─────────────────────────────────────────────────────────────────────────────
