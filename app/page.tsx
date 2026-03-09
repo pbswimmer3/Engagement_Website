@@ -38,8 +38,8 @@ export default function HomePage() {
       </section>
 
       {/* Photo Gallery */}
-      <section className="py-20 bg-rose-light overflow-hidden">
-        <h2 className="font-serif text-3xl text-center text-dark/50 italic mb-12">
+      <section className="py-20 overflow-hidden">
+        <h2 className="font-serif text-5xl text-center text-dark/50 italic mb-12">
           A Glimpse of Us
         </h2>
         <PhotoGallery />
