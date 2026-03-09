@@ -43,7 +43,7 @@
     content: '';
     position: fixed;
     inset: 0;
-    background-image: url('/assets/bg-main.jpg');
+    background-image: url('/assets/bg-main.jpeg');
     background-size: cover;
     background-position: center;
     opacity: 0.12;
