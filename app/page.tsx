@@ -31,9 +31,9 @@ export default function HomePage() {
 
         <div className="space-y-2">
           <p className="font-serif text-4xl font-light text-dark/75">{EVENT.date}</p>
-          <p className="font-serif text-4xl text-dark/75 mt-6">{EVENT.time}</p>
-          <p className="font-serif text-4xl text-dark/75 mt-6">{EVENT.venue}</p>
-          <p className="font-serif text-4xl text-dark/75 mt-6">{EVENT.address}</p>
+          <p className="font-serif text-4xl font-light text-dark/75 mt-6">{EVENT.time}</p>
+          <p className="font-serif text-3xl font-light text-dark/75 mt-6">{EVENT.venue}</p>
+          <p className="font-serif text-4xl font-light text-dark/75 mt-6">{EVENT.address}</p>
         </div>
       </section>
 
