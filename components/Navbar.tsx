@@ -18,7 +18,7 @@ export default function Navbar() {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-cream/90 backdrop-blur-sm border-b border-gold/20">
       <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
-        <Link href="/" className="font-script text-2xl text-rose leading-none">
+        <Link href="/" className="font-script text-4xl text-rose leading-none">
           Prad & Aanya
         </Link>
 
