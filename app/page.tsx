@@ -21,7 +21,7 @@ export default function HomePage() {
 
         {/* Script name — off-white, increased word spacing */}
         <h1
-          className="font-script text-5xl sm:text-7xl md:text-8xl lg:text-9xl text-offwhite leading-none mb-10 [word-spacing:0.35em]"
+          className="font-script text-5xl sm:text-7xl md:text-8xl lg:text-9xl text-terracotta leading-none mb-10 [word-spacing:0.35em]"
           style={{ textShadow: '0 2px 12px rgba(0,0,0,0.22)' }}
         >
           Aanya &amp; Prad

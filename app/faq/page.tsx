@@ -43,7 +43,7 @@ export default function FAQPage() {
             <span className="text-gold text-sm">&#9670;</span>
             <span className="block w-16 h-px bg-gold/60" />
           </div>
-          <p className="font-serif italic text-dark/45 text-lg">
+          <p className="font-serif italic text-navy/60 text-lg">
             Have a question not answered here? Just reach out.
           </p>
         </div>
@@ -57,9 +57,9 @@ export default function FAQPage() {
             >
               <button
                 onClick={() => setOpen(open === i ? null : i)}
-                className="w-full flex justify-between items-center px-6 py-5 text-left hover:bg-rose-light/30 transition-colors group"
+                className="w-full flex justify-between items-center px-6 py-5 text-left hover:bg-navy-light/30 transition-colors group"
               >
-                <span className="font-serif text-lg text-dark pr-4 group-hover:text-rose transition-colors">
+                <span className="font-serif text-lg text-darkdenim pr-4 group-hover:text-navy transition-colors">
                   {item.q}
                 </span>
                 <span

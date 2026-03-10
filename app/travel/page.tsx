@@ -55,7 +55,7 @@ export default function TravelPage() {
             href={`https://maps.google.com/?q=${encodeURIComponent(VENUE.address)}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block px-5 py-2 border border-rose text-rose font-sans text-xs uppercase tracking-wider rounded-lg hover:bg-rose hover:text-cream transition-colors"
+            className="inline-block px-5 py-2 border border-navy text-navy font-sans text-xs uppercase tracking-wider rounded-lg hover:bg-navy hover:text-cream transition-colors"
           >
             Open in Google Maps &rarr;
           </a>
@@ -91,7 +91,7 @@ export default function TravelPage() {
                   href={hotel.mapsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-auto font-sans text-xs text-rose hover:underline"
+                  className="mt-auto font-sans text-xs text-navy hover:underline"
                 >
                   Book &rarr;
                 </a>
@@ -111,7 +111,7 @@ export default function TravelPage() {
               >
                 <div className="flex items-center gap-3 mb-2">
                   <Plane className="text-gold flex-shrink-0" size={20} />
-                  <span className="bg-rose text-cream font-sans text-xs font-bold px-2 py-0.5 rounded-md tracking-wider">
+                  <span className="bg-navy text-cream font-sans text-xs font-bold px-2 py-0.5 rounded-md tracking-wider">
                     {airport.code}
                   </span>
                 </div>
