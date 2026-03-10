@@ -25,11 +25,11 @@
 @layer base {
   html {
     font-size: 112%;
-    @apply bg-cream text-dark scroll-smooth;
+    @apply bg-cream text-navy scroll-smooth overflow-x-hidden;
   }
 
   h1, h2, h3, h4 {
-    @apply font-serif font-bold;
+    @apply font-serif font-bold text-denim;
   }
 
   /*

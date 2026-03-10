@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Cormorant_Garamond, Great_Vibes, Lato } from 'next/font/google'
 import Navbar from '@/components/Navbar'
 import './globals.css'
@@ -21,6 +21,11 @@ const lato = Lato({
   weight: ['300', '400', '700'],
   variable: '--font-lato',
 })
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+}
 
 export const metadata: Metadata = {
   title: "Prad & Aanya — Engagement",

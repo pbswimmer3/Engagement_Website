@@ -17,6 +17,9 @@ const config: Config = {
         },
         gold: '#C9A96E',
         dark: '#2C2C2C',
+        navy: '#1B2A4A',
+        denim: '#253A5E',
+        offwhite: '#EDE6D8',
       },
       fontFamily: {
         serif: ['var(--font-cormorant)', 'Georgia', 'serif'],

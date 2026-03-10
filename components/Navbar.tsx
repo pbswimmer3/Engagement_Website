@@ -16,10 +16,11 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-cream/90 backdrop-blur-sm border-b border-gold/20">
-      <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-cream backdrop-blur-sm border-b border-gold/20">
+      {/* Full-width bar — brand pinned to far left */}
+      <div className="px-6 h-16 flex items-center justify-between">
         <Link href="/" className="font-script text-4xl text-rose leading-none">
-          Prad & Aanya
+          Aanya & Prad
         </Link>
 
         {/* Desktop links */}
@@ -31,7 +32,7 @@ export default function Navbar() {
               className={`font-sans text-xs uppercase tracking-widest transition-colors ${
                 pathname === link.href
                   ? 'text-rose border-b border-rose pb-0.5'
-                  : 'text-dark/50 hover:text-rose'
+                  : 'text-navy/50 hover:text-rose'
               }`}
             >
               {link.label}
@@ -41,7 +42,7 @@ export default function Navbar() {
 
         {/* Mobile hamburger */}
         <button
-          className="sm:hidden text-dark/60 hover:text-rose transition-colors"
+          className="sm:hidden text-navy/60 hover:text-rose transition-colors p-2"
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Toggle menu"
         >
@@ -59,8 +60,8 @@ export default function Navbar() {
               key={link.href}
               href={link.href}
               onClick={() => setMenuOpen(false)}
-              className={`font-sans text-xs uppercase tracking-widest ${
-                pathname === link.href ? 'text-rose' : 'text-dark/50'
+              className={`font-sans text-xs uppercase tracking-widest py-1 ${
+                pathname === link.href ? 'text-rose' : 'text-navy/50'
               }`}
             >
               {link.label}

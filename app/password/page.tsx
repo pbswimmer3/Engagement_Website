@@ -36,7 +36,7 @@ export default function PasswordPage() {
         Engagement Celebration
       </p>
 
-      <h1 className="font-script text-6xl text-rose leading-none mb-3">
+      <h1 className="font-script text-5xl sm:text-6xl text-rose leading-none mb-3">
         Prad &amp; Aanya
       </h1>
 
