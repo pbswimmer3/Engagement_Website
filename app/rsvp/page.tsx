@@ -124,7 +124,7 @@ export default function RSVPPage() {
                   <div
                     className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-sans font-bold border-2 transition-colors ${
                       isActive
-                        ? 'bg-rose border-rose text-cream'
+                        ? 'bg-navy border-navy text-cream'
                         : isDone
                         ? 'bg-gold/30 border-gold text-dark/60'
                         : 'border-dark/20 text-dark/25'
@@ -134,7 +134,7 @@ export default function RSVPPage() {
                   </div>
                   <span
                     className={`text-xs font-sans uppercase tracking-wider hidden sm:block ${
-                      isActive ? 'text-rose' : 'text-dark/35'
+                      isActive ? 'text-navy' : 'text-dark/35'
                     }`}
                   >
                     {STEP_LABELS[s]}
@@ -158,19 +158,19 @@ export default function RSVPPage() {
                 onChange={(e) => setQuery(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
                 placeholder="First or last name..."
-                className="flex-1 px-4 py-3 border border-gold/40 rounded-xl bg-white font-serif text-dark placeholder:text-dark/30 focus:outline-none focus:border-rose transition-colors"
+                className="flex-1 px-4 py-3 border border-gold/40 rounded-xl bg-white font-serif text-dark placeholder:text-dark/30 focus:outline-none focus:border-navy transition-colors"
               />
               <button
                 onClick={handleSearch}
                 disabled={loading || !query.trim()}
-                className="px-6 py-3 bg-rose text-cream font-sans text-xs uppercase tracking-wider rounded-xl hover:bg-rose-dark transition-colors disabled:opacity-50"
+                className="px-6 py-3 bg-navy text-cream font-sans text-xs uppercase tracking-wider rounded-xl hover:bg-navy-dark transition-colors disabled:opacity-50"
               >
                 {loading ? '...' : 'Search'}
               </button>
             </div>
 
             {error && (
-              <p className="text-center text-sm text-rose/80 font-sans">{error}</p>
+              <p className="text-center text-sm text-navy/80 font-sans">{error}</p>
             )}
 
             {results.length > 0 && (
@@ -182,7 +182,7 @@ export default function RSVPPage() {
                   <button
                     key={guest.id}
                     onClick={() => handleSelectGuest(guest)}
-                    className="w-full px-6 py-4 border border-gold/30 rounded-xl text-left font-serif text-lg text-dark hover:border-rose hover:bg-rose-light/40 transition-colors"
+                    className="w-full px-6 py-4 border border-gold/30 rounded-xl text-left font-serif text-lg text-dark hover:border-navy hover:bg-navy-light/40 transition-colors"
                   >
                     {guest.first_name} {guest.last_name}
                   </button>
@@ -198,7 +198,7 @@ export default function RSVPPage() {
             <div className="text-center">
               <p className="font-serif text-xl text-dark/70">
                 Hi,{' '}
-                <span className="text-rose">
+                <span className="text-navy">
                   {selected.first_name} {selected.last_name}
                 </span>
               </p>
@@ -212,22 +212,22 @@ export default function RSVPPage() {
               onChange={(e) => setEmail(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleVerify()}
               placeholder="your@email.com"
-              className="w-full px-4 py-3 border border-gold/40 rounded-xl bg-white font-serif text-dark placeholder:text-dark/30 focus:outline-none focus:border-rose transition-colors"
+              className="w-full px-4 py-3 border border-gold/40 rounded-xl bg-white font-serif text-dark placeholder:text-dark/30 focus:outline-none focus:border-navy transition-colors"
             />
             {error && (
-              <p className="text-center text-sm text-rose/80 font-sans">{error}</p>
+              <p className="text-center text-sm text-navy/80 font-sans">{error}</p>
             )}
             <div className="flex gap-3">
               <button
                 onClick={() => { setStep('search'); setError('') }}
-                className="flex-1 px-6 py-3 border border-gold/40 text-dark/55 font-sans text-xs uppercase tracking-wider rounded-xl hover:border-rose transition-colors"
+                className="flex-1 px-6 py-3 border border-gold/40 text-dark/55 font-sans text-xs uppercase tracking-wider rounded-xl hover:border-navy transition-colors"
               >
                 Back
               </button>
               <button
                 onClick={handleVerify}
                 disabled={loading || !email.trim()}
-                className="flex-1 px-6 py-3 bg-rose text-cream font-sans text-xs uppercase tracking-wider rounded-xl hover:bg-rose-dark transition-colors disabled:opacity-50"
+                className="flex-1 px-6 py-3 bg-navy text-cream font-sans text-xs uppercase tracking-wider rounded-xl hover:bg-navy-dark transition-colors disabled:opacity-50"
               >
                 {loading ? 'Verifying...' : 'Verify'}
               </button>
@@ -242,7 +242,7 @@ export default function RSVPPage() {
               <div className="bg-gold/10 border border-gold/30 rounded-xl px-5 py-4 text-center">
                 <p className="font-serif text-sm text-dark/60">
                   Your current RSVP:{' '}
-                  <span className="text-rose font-medium">
+                  <span className="text-navy font-medium">
                     {currentStatus === 'attending' ? 'Attending' : 'Not Attending'}
                   </span>
                 </p>
@@ -261,8 +261,8 @@ export default function RSVPPage() {
                 onClick={() => setRsvpStatus('attending')}
                 className={`p-6 border-2 rounded-2xl text-center transition-colors ${
                   rsvpStatus === 'attending'
-                    ? 'border-rose bg-rose-light text-rose'
-                    : 'border-gold/30 hover:border-rose/50 text-dark/65'
+                    ? 'border-navy bg-navy-light text-navy'
+                    : 'border-gold/30 hover:border-navy/50 text-dark/65'
                 }`}
               >
                 <div className="text-3xl mb-2">&#127881;</div>
@@ -275,8 +275,8 @@ export default function RSVPPage() {
                 onClick={() => setRsvpStatus('not_attending')}
                 className={`p-6 border-2 rounded-2xl text-center transition-colors ${
                   rsvpStatus === 'not_attending'
-                    ? 'border-rose bg-rose-light text-rose'
-                    : 'border-gold/30 hover:border-rose/50 text-dark/65'
+                    ? 'border-navy bg-navy-light text-navy'
+                    : 'border-gold/30 hover:border-navy/50 text-dark/65'
                 }`}
               >
                 <div className="text-3xl mb-2">&#128140;</div>
@@ -288,13 +288,13 @@ export default function RSVPPage() {
             </div>
 
             {error && (
-              <p className="text-center text-sm text-rose/80 font-sans">{error}</p>
+              <p className="text-center text-sm text-navy/80 font-sans">{error}</p>
             )}
 
             <button
               onClick={handleRSVP}
               disabled={loading || !rsvpStatus}
-              className="w-full px-6 py-4 bg-rose text-cream font-sans text-xs uppercase tracking-widest rounded-xl hover:bg-rose-dark transition-colors disabled:opacity-50"
+              className="w-full px-6 py-4 bg-navy text-cream font-sans text-xs uppercase tracking-widest rounded-xl hover:bg-navy-dark transition-colors disabled:opacity-50"
             >
               {loading ? 'Submitting...' : 'Submit RSVP'}
             </button>
