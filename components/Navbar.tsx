@@ -19,7 +19,7 @@ export default function Navbar() {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-cream backdrop-blur-sm border-b border-gold/20">
       {/* Full-width bar — brand pinned to far left */}
       <div className="px-6 h-16 flex items-center justify-between">
-        <Link href="/" className="font-script text-4xl text-rose leading-none">
+        <Link href="/" className="font-script text-4xl text-darkdenim leading-none">
           Aanya & Prad
         </Link>
 
@@ -31,8 +31,8 @@ export default function Navbar() {
               href={link.href}
               className={`font-sans text-xs uppercase tracking-widest transition-colors ${
                 pathname === link.href
-                  ? 'text-rose border-b border-rose pb-0.5'
-                  : 'text-navy/50 hover:text-rose'
+                  ? 'text-darkdenim border-b border-darkdenim pb-0.5'
+                  : 'text-navy/50 hover:text-darkdenim'
               }`}
             >
               {link.label}
@@ -42,7 +42,7 @@ export default function Navbar() {
 
         {/* Mobile hamburger */}
         <button
-          className="sm:hidden text-navy/60 hover:text-rose transition-colors p-2"
+          className="sm:hidden text-navy/60 hover:text-darkdenim transition-colors p-2"
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Toggle menu"
         >
@@ -61,7 +61,7 @@ export default function Navbar() {
               href={link.href}
               onClick={() => setMenuOpen(false)}
               className={`font-sans text-xs uppercase tracking-widest py-1 ${
-                pathname === link.href ? 'text-rose' : 'text-navy/50'
+                pathname === link.href ? 'text-darkdenim' : 'text-navy/50'
               }`}
             >
               {link.label}

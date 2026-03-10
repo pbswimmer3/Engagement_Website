@@ -20,6 +20,7 @@ const config: Config = {
         navy: '#1B2A4A',
         denim: '#253A5E',
         offwhite: '#EDE6D8',
+        darkdenim: '#152D44', // You can name this whatever you like!
       },
       fontFamily: {
         serif: ['var(--font-cormorant)', 'Georgia', 'serif'],

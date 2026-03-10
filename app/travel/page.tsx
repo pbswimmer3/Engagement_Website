@@ -49,7 +49,7 @@ export default function TravelPage() {
 
         {/* Venue card */}
         <div className="bg-white border border-gold/25 rounded-2xl p-8 mb-6 shadow-sm">
-          <h2 className="font-serif text-2xl text-dark mb-1">{VENUE.name}</h2>
+          <h2 className="font-serif text-2xl text-darkdenim mb-1">{VENUE.name}</h2>
           <p className="font-sans text-sm text-dark/55 mb-5">{VENUE.address}</p>
           <a
             href={`https://maps.google.com/?q=${encodeURIComponent(VENUE.address)}`}

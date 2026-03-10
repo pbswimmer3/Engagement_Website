@@ -104,7 +104,7 @@ export default function RSVPPage() {
       <div className="w-full max-w-xl">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="font-serif text-5xl text-dark mb-3">RSVP</h1>
+          <h1 className="font-serif text-5xl text-darkdenim mb-3">RSVP</h1>
           <div className="flex items-center justify-center gap-4">
             <span className="block w-16 h-px bg-gold/60" />
             <span className="text-gold text-sm">&#9670;</span>

@@ -35,7 +35,7 @@ export default function FAQPage() {
       <div className="max-w-2xl mx-auto">
         {/* Header */}
         <div className="text-center mb-14">
-          <h1 className="font-serif text-5xl text-dark mb-3">
+          <h1 className="font-serif text-5xl text-darkdenim mb-3">
             Frequently Asked Questions
           </h1>
           <div className="flex items-center justify-center gap-4 mb-6">
