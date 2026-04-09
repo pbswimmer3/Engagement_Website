@@ -18,7 +18,7 @@ const FAQS = [
   },
   {
     q: 'Is parking available?',
-    a: 'Yes, there is a lot of free self-parking available at the venue.',
+    a: 'Yes, there is plenty of free self-parking available at the venue.',
   },
   {
     q: 'When is the RSVP deadline?',
@@ -43,7 +43,7 @@ export default function FAQPage() {
             <span className="text-gold text-sm">&#9670;</span>
             <span className="block w-16 h-px bg-gold/60" />
           </div>
-          <p className="font-serif italic text-navy/60 text-lg">
+          <p className="font-serif italic text-navy/90 text-lg">
             Have a question not answered here? Just reach out.
           </p>
         </div>
@@ -74,7 +74,7 @@ export default function FAQPage() {
               {open === i && (
                 <div className="px-6 pb-6">
                   <div className="border-t border-gold/15 pt-4">
-                    <p className="font-sans text-sm text-dark/60 leading-relaxed whitespace-pre-line">
+                    <p className="font-sans text-sm text-dark/90 leading-relaxed whitespace-pre-line">
                       {item.a}
                     </p>
                   </div>

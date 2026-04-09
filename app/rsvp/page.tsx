@@ -291,7 +291,7 @@ export default function RSVPPage() {
         {step === 'confirm_group' && selected && (
           <div className="space-y-6">
             <div className="text-center">
-              <p className="font-serif text-xl text-dark/70">
+              <p className="font-serif text-xl text-dark/90">
                 Hi,{' '}
                 <span className="text-navy">
                   {selected.first_name} {selected.last_name}
@@ -341,7 +341,7 @@ export default function RSVPPage() {
                   {selected.first_name} {selected.last_name}
                 </span>
               </p>
-              <p className="font-serif text-base text-dark/45 italic mt-2">
+              <p className="font-serif text-base text-dark/90 italic mt-2">
                 Please enter an email address associated with your invitation.
               </p>
             </div>
