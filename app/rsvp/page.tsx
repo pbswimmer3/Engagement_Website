@@ -297,7 +297,7 @@ export default function RSVPPage() {
                   {selected.first_name} {selected.last_name}
                 </span>
               </p>
-              <p className="font-serif text-base text-dark/50 italic mt-3">
+              <p className="font-serif text-base text-dark/90 italic mt-3">
                 Are you part of the invitation with:
               </p>
             </div>
@@ -317,7 +317,7 @@ export default function RSVPPage() {
             <div className="flex gap-3">
               <button
                 onClick={handleNotMyGroup}
-                className="flex-1 px-6 py-3 border border-gold/40 text-dark/55 font-sans text-xs uppercase tracking-wider rounded-xl hover:border-navy transition-colors"
+                className="flex-1 px-6 py-3 border border-gold/40 text-dark/90 font-sans text-xs uppercase tracking-wider rounded-xl hover:border-navy transition-colors"
               >
                 No, that&apos;s not me
               </button>
@@ -378,7 +378,7 @@ export default function RSVPPage() {
         {step === 'rsvp' && selected && (
           <div className="space-y-6">
             {groupMembers.length > 1 && (
-              <p className="font-serif text-lg text-center text-dark/55 italic">
+              <p className="font-serif text-lg text-center text-dark/90 italic">
                 Please RSVP for each member of your party
               </p>
             )}
@@ -474,7 +474,7 @@ export default function RSVPPage() {
                 ))}
               </div>
             ) : (
-              <p className="font-serif text-lg text-dark/55 italic">
+              <p className="font-serif text-lg text-dark/90 italic">
                 {anyAttending
                   ? `Thank you, ${selected.first_name}! We're so excited to celebrate with you.`
                   : `Thank you for letting us know, ${selected.first_name}. You will be missed!`}
