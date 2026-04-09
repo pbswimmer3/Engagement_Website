@@ -174,7 +174,7 @@ export default function RSVPPage() {
             )}
 
             {results.length > 0 && (
-              <div className="space-y-3">
+              <div className="space-y-3 bg-white p-4 rounded-xl shadow-sm">
                 <p className="font-sans text-xs uppercase tracking-wider text-dark/40 text-center">
                   Select your name
                 </p>
