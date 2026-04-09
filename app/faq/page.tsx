@@ -22,7 +22,7 @@ const FAQS = [
   },
   {
     q: 'When is the RSVP deadline?',
-    a: 'If you have extenuating circumstances and cannot confirm by May 1st, please let us know.',
+    a: 'The RSVP deadline is May 1st. If you have extenuating circumstances and cannot confirm by May 1st, please let us know.',
   },
 ]
 // ─────────────────────────────────────────────────────────────────────────────
