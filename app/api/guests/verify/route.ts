@@ -11,22 +11,69 @@ export async function POST(req: NextRequest) {
 
     const supabase = createAdminClient()
 
-    const { data, error } = await supabase
+    // Look up the selected guest
+    const { data: guest, error } = await supabase
       .from('guests')
-      .select('id, email, rsvp_status')
+      .select('id, email, rsvp_status, invitation_group')
       .eq('id', id)
       .single()
 
-    if (error || !data) {
+    if (error || !guest) {
       return NextResponse.json({ error: 'Guest not found' }, { status: 404 })
     }
 
-    if (data.email.toLowerCase() !== email.toLowerCase()) {
-      // Return a generic error to avoid confirming whether the guest exists
+    // Verify email: check if the provided email matches this guest's email,
+    // OR any email in the same invitation group
+    let emailMatched = false
+
+    if (guest.email && guest.email.toLowerCase() === email.toLowerCase()) {
+      emailMatched = true
+    } else if (guest.invitation_group) {
+      // Check if the email belongs to any member of the same group
+      const { data: groupMembers } = await supabase
+        .from('guests')
+        .select('email')
+        .eq('invitation_group', guest.invitation_group)
+        .not('email', 'is', null)
+
+      if (groupMembers) {
+        emailMatched = groupMembers.some(
+          (m) => m.email && m.email.toLowerCase() === email.toLowerCase()
+        )
+      }
+    }
+
+    if (!emailMatched) {
       return NextResponse.json({ error: 'Email does not match' }, { status: 401 })
     }
 
-    return NextResponse.json({ rsvp_status: data.rsvp_status })
+    // Fetch all group members if this guest is in a group
+    let groupMembers: { id: string; first_name: string; last_name: string; rsvp_status: string }[] = []
+
+    if (guest.invitation_group) {
+      const { data: members } = await supabase
+        .from('guests')
+        .select('id, first_name, last_name, rsvp_status')
+        .eq('invitation_group', guest.invitation_group)
+        .order('first_name')
+
+      groupMembers = members ?? []
+    } else {
+      // Solo guest — just return themselves
+      const { data: self } = await supabase
+        .from('guests')
+        .select('id, first_name, last_name, rsvp_status')
+        .eq('id', id)
+        .single()
+
+      if (self) groupMembers = [self]
+    }
+
+    return NextResponse.json({
+      rsvp_status: guest.rsvp_status,
+      invitation_group: guest.invitation_group,
+      group_members: groupMembers,
+    })
   } catch (err) {
     console.error('Guest verify error:', err)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
