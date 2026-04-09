@@ -2,12 +2,14 @@
 
 import { useState } from 'react'
 
-type Step = 'search' | 'verify' | 'rsvp' | 'success'
-type Guest = { id: string; first_name: string; last_name: string }
-type RsvpStatus = 'attending' | 'not_attending'
+type Step = 'search' | 'confirm_group' | 'verify' | 'rsvp' | 'success'
+type Guest = { id: string; first_name: string; last_name: string; invitation_group: string | null }
+type GroupMember = { id: string; first_name: string; last_name: string; rsvp_status: string }
+type RsvpChoice = 'attending' | 'not_attending'
 
 const STEP_LABELS: Record<string, string> = {
   search: 'Find Name',
+  confirm_group: 'Find Name',
   verify: 'Verify Email',
   rsvp: 'RSVP',
 }
@@ -19,10 +21,13 @@ export default function RSVPPage() {
   const [results, setResults] = useState<Guest[]>([])
   const [selected, setSelected] = useState<Guest | null>(null)
   const [email, setEmail] = useState('')
-  const [currentStatus, setCurrentStatus] = useState<string | null>(null)
-  const [rsvpStatus, setRsvpStatus] = useState<RsvpStatus | ''>('')
+  const [groupMembers, setGroupMembers] = useState<GroupMember[]>([])
+  const [rsvpChoices, setRsvpChoices] = useState<Record<string, RsvpChoice>>({})
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+
+  // For the confirmation step: show other group members found via search
+  const [groupPreview, setGroupPreview] = useState<Guest[]>([])
 
   const handleSearch = async () => {
     if (!query.trim()) return
@@ -48,9 +53,63 @@ export default function RSVPPage() {
     }
   }
 
-  const handleSelectGuest = (guest: Guest) => {
+  const handleSelectGuest = async (guest: Guest) => {
     setSelected(guest)
+    setError('')
+
+    if (guest.invitation_group) {
+      // Find other members in the same group from search results,
+      // or fetch them to show the confirmation
+      const others = results.filter(
+        (g) => g.invitation_group === guest.invitation_group && g.id !== guest.id
+      )
+
+      if (others.length > 0) {
+        setGroupPreview(others)
+        setStep('confirm_group')
+        return
+      }
+
+      // If others weren't in search results, fetch the full group
+      try {
+        setLoading(true)
+        const res = await fetch('/api/guests/group', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ invitation_group: guest.invitation_group }),
+        })
+        const data = await res.json()
+        if (res.ok && data.members) {
+          const othersFromGroup = data.members.filter(
+            (g: Guest) => g.id !== guest.id
+          )
+          if (othersFromGroup.length > 0) {
+            setGroupPreview(othersFromGroup)
+            setStep('confirm_group')
+            return
+          }
+        }
+      } catch {
+        // Continue to verify even if preview fetch fails
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    // No group or solo guest — go straight to verify
     setStep('verify')
+  }
+
+  const handleConfirmGroup = () => {
+    setStep('verify')
+    setError('')
+  }
+
+  const handleNotMyGroup = () => {
+    // Reset and let user search again
+    setSelected(null)
+    setGroupPreview([])
+    setStep('search')
     setError('')
   }
 
@@ -66,7 +125,19 @@ export default function RSVPPage() {
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error)
-      setCurrentStatus(data.rsvp_status)
+
+      // Set group members and initialize RSVP choices
+      const members: GroupMember[] = data.group_members ?? []
+      setGroupMembers(members)
+
+      const initialChoices: Record<string, RsvpChoice> = {}
+      members.forEach((m) => {
+        if (m.rsvp_status === 'attending' || m.rsvp_status === 'not_attending') {
+          initialChoices[m.id] = m.rsvp_status
+        }
+      })
+      setRsvpChoices(initialChoices)
+
       setStep('rsvp')
     } catch {
       setError("That email doesn't match our records. Please double-check or contact us.")
@@ -76,17 +147,30 @@ export default function RSVPPage() {
   }
 
   const handleRSVP = async () => {
-    if (!rsvpStatus || !selected) return
+    if (!selected || groupMembers.length === 0) return
+
+    // Check all members have a choice
+    const allChosen = groupMembers.every((m) => rsvpChoices[m.id])
+    if (!allChosen) {
+      setError('Please select a response for each person.')
+      return
+    }
+
     setLoading(true)
     setError('')
     try {
+      const rsvps = groupMembers.map((m) => ({
+        guest_id: m.id,
+        rsvp_status: rsvpChoices[m.id],
+      }))
+
       const res = await fetch('/api/guests/rsvp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           id: selected.id,
           email: email.trim().toLowerCase(),
-          rsvp_status: rsvpStatus,
+          rsvps,
         }),
       })
       const data = await res.json()
@@ -98,6 +182,15 @@ export default function RSVPPage() {
       setLoading(false)
     }
   }
+
+  const setChoice = (guestId: string, choice: RsvpChoice) => {
+    setRsvpChoices((prev) => ({ ...prev, [guestId]: choice }))
+  }
+
+  // For the stepper, map confirm_group to search position
+  const stepForIndicator = step === 'confirm_group' ? 'search' : step
+
+  const anyAttending = Object.values(rsvpChoices).some((s) => s === 'attending')
 
   return (
     <div className="min-h-screen pt-24 pb-16 px-6 flex flex-col items-center">
@@ -116,9 +209,11 @@ export default function RSVPPage() {
         {step !== 'success' && (
           <div className="flex justify-center gap-6 mb-10">
             {STEP_ORDER.map((s, i) => {
-              const currentIndex = STEP_ORDER.indexOf(step)
+              const currentIndex = STEP_ORDER.indexOf(
+                stepForIndicator as (typeof STEP_ORDER)[number]
+              )
               const isDone = currentIndex > i
-              const isActive = step === s
+              const isActive = stepForIndicator === s
               return (
                 <div key={s} className="flex items-center gap-2">
                   <div
@@ -192,6 +287,50 @@ export default function RSVPPage() {
           </div>
         )}
 
+        {/* ── Step 1b: Confirm Group ── */}
+        {step === 'confirm_group' && selected && (
+          <div className="space-y-6">
+            <div className="text-center">
+              <p className="font-serif text-xl text-dark/70">
+                Hi,{' '}
+                <span className="text-navy">
+                  {selected.first_name} {selected.last_name}
+                </span>
+              </p>
+              <p className="font-serif text-base text-dark/50 italic mt-3">
+                Are you part of the invitation with:
+              </p>
+            </div>
+
+            <div className="bg-white border border-gold/25 rounded-2xl px-6 py-5 space-y-2">
+              {groupPreview.map((g) => (
+                <div
+                  key={g.id}
+                  className="font-serif text-lg text-navy flex items-center gap-2"
+                >
+                  <span className="text-gold">&#9670;</span>
+                  {g.first_name} {g.last_name}
+                </div>
+              ))}
+            </div>
+
+            <div className="flex gap-3">
+              <button
+                onClick={handleNotMyGroup}
+                className="flex-1 px-6 py-3 border border-gold/40 text-dark/55 font-sans text-xs uppercase tracking-wider rounded-xl hover:border-navy transition-colors"
+              >
+                No, that&apos;s not me
+              </button>
+              <button
+                onClick={handleConfirmGroup}
+                className="flex-1 px-6 py-3 bg-navy text-cream font-sans text-xs uppercase tracking-wider rounded-xl hover:bg-navy-dark transition-colors"
+              >
+                Yes, that&apos;s us!
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* ── Step 2: Verify Email ── */}
         {step === 'verify' && selected && (
           <div className="space-y-6">
@@ -203,7 +342,7 @@ export default function RSVPPage() {
                 </span>
               </p>
               <p className="font-serif text-base text-dark/45 italic mt-2">
-                Please enter the email address associated with your invitation.
+                Please enter an email address associated with your invitation.
               </p>
             </div>
             <input
@@ -238,54 +377,66 @@ export default function RSVPPage() {
         {/* ── Step 3: RSVP ── */}
         {step === 'rsvp' && selected && (
           <div className="space-y-6">
-            {currentStatus && currentStatus !== 'pending' && (
-              <div className="bg-gold/10 border border-gold/30 rounded-xl px-5 py-4 text-center">
-                <p className="font-serif text-sm text-dark/60">
-                  Your current RSVP:{' '}
-                  <span className="text-navy font-medium">
-                    {currentStatus === 'attending' ? 'Attending' : 'Not Attending'}
-                  </span>
-                </p>
-                <p className="font-sans text-xs text-dark/40 mt-1">
-                  You can update your response below.
-                </p>
-              </div>
+            {groupMembers.length > 1 && (
+              <p className="font-serif text-lg text-center text-dark/55 italic">
+                Please RSVP for each member of your party
+              </p>
             )}
 
-            <p className="font-serif text-xl text-center text-dark/65">
-              Will you be joining us?
-            </p>
+            {groupMembers.length === 1 && (
+              <p className="font-serif text-xl text-center text-dark/65">
+                Will you be joining us?
+              </p>
+            )}
 
-            <div className="grid grid-cols-2 gap-4">
-              <button
-                onClick={() => setRsvpStatus('attending')}
-                className={`p-6 border-2 rounded-2xl text-center transition-colors ${
-                  rsvpStatus === 'attending'
-                    ? 'border-navy bg-navy-light text-navy'
-                    : 'border-gold/30 hover:border-navy/50 text-dark/65'
-                }`}
-              >
-                <div className="text-3xl mb-2">&#127881;</div>
-                <div className="font-serif text-lg">Joyfully Accepts</div>
-                <div className="font-sans text-xs text-dark/40 mt-1 uppercase tracking-wider">
-                  I&apos;ll be there!
+            {groupMembers.map((member) => {
+              const choice = rsvpChoices[member.id] ?? ''
+              const hasPrior =
+                member.rsvp_status === 'attending' || member.rsvp_status === 'not_attending'
+
+              return (
+                <div
+                  key={member.id}
+                  className="bg-white border border-gold/25 rounded-2xl px-5 py-5 space-y-4"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="font-serif text-lg text-navy">
+                      {member.first_name} {member.last_name}
+                    </span>
+                    {hasPrior && (
+                      <span className="font-sans text-xs text-dark/40 uppercase tracking-wider">
+                        Currently: {member.rsvp_status === 'attending' ? 'Attending' : 'Not Attending'}
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <button
+                      onClick={() => setChoice(member.id, 'attending')}
+                      className={`p-4 border-2 rounded-xl text-center transition-colors ${
+                        choice === 'attending'
+                          ? 'border-navy bg-navy-light text-navy'
+                          : 'border-gold/30 hover:border-navy/50 text-dark/65'
+                      }`}
+                    >
+                      <div className="text-2xl mb-1">&#127881;</div>
+                      <div className="font-serif text-base">Accepts</div>
+                    </button>
+                    <button
+                      onClick={() => setChoice(member.id, 'not_attending')}
+                      className={`p-4 border-2 rounded-xl text-center transition-colors ${
+                        choice === 'not_attending'
+                          ? 'border-navy bg-navy-light text-navy'
+                          : 'border-gold/30 hover:border-navy/50 text-dark/65'
+                      }`}
+                    >
+                      <div className="text-2xl mb-1">&#128140;</div>
+                      <div className="font-serif text-base">Declines</div>
+                    </button>
+                  </div>
                 </div>
-              </button>
-              <button
-                onClick={() => setRsvpStatus('not_attending')}
-                className={`p-6 border-2 rounded-2xl text-center transition-colors ${
-                  rsvpStatus === 'not_attending'
-                    ? 'border-navy bg-navy-light text-navy'
-                    : 'border-gold/30 hover:border-navy/50 text-dark/65'
-                }`}
-              >
-                <div className="text-3xl mb-2">&#128140;</div>
-                <div className="font-serif text-lg">Regretfully Declines</div>
-                <div className="font-sans text-xs text-dark/40 mt-1 uppercase tracking-wider">
-                  Can&apos;t make it
-                </div>
-              </button>
-            </div>
+              )
+            })}
 
             {error && (
               <p className="text-center text-sm text-navy/80 font-sans">{error}</p>
@@ -293,10 +444,10 @@ export default function RSVPPage() {
 
             <button
               onClick={handleRSVP}
-              disabled={loading || !rsvpStatus}
+              disabled={loading || !groupMembers.every((m) => rsvpChoices[m.id])}
               className="w-full px-6 py-4 bg-navy text-cream font-sans text-xs uppercase tracking-widest rounded-xl hover:bg-navy-dark transition-colors disabled:opacity-50"
             >
-              {loading ? 'Submitting...' : 'Submit RSVP'}
+              {loading ? 'Submitting...' : groupMembers.length > 1 ? 'Submit RSVPs' : 'Submit RSVP'}
             </button>
           </div>
         )}
@@ -305,16 +456,31 @@ export default function RSVPPage() {
         {step === 'success' && selected && (
           <div className="text-center space-y-6 py-10">
             <div className="text-6xl">
-              {rsvpStatus === 'attending' ? '🎊' : '💌'}
+              {anyAttending ? '🎊' : '💌'}
             </div>
             <h2 className="font-serif text-3xl text-dark">
-              {rsvpStatus === 'attending' ? "We can't wait to see you!" : "We'll miss you!"}
+              {anyAttending ? "We can't wait to celebrate with you!" : "We'll miss you!"}
             </h2>
-            <p className="font-serif text-lg text-dark/55 italic">
-              {rsvpStatus === 'attending'
-                ? `Thank you, ${selected.first_name}! We're so excited to celebrate with you.`
-                : `Thank you for letting us know, ${selected.first_name}. You will be missed!`}
-            </p>
+
+            {groupMembers.length > 1 ? (
+              <div className="space-y-3">
+                {groupMembers.map((m) => (
+                  <p key={m.id} className="font-serif text-lg text-dark/55">
+                    {m.first_name} {m.last_name} —{' '}
+                    <span className={rsvpChoices[m.id] === 'attending' ? 'text-navy' : 'text-dark/40'}>
+                      {rsvpChoices[m.id] === 'attending' ? 'Attending' : 'Not Attending'}
+                    </span>
+                  </p>
+                ))}
+              </div>
+            ) : (
+              <p className="font-serif text-lg text-dark/55 italic">
+                {anyAttending
+                  ? `Thank you, ${selected.first_name}! We're so excited to celebrate with you.`
+                  : `Thank you for letting us know, ${selected.first_name}. You will be missed!`}
+              </p>
+            )}
+
             <div className="flex items-center justify-center gap-4 pt-2">
               <span className="block w-16 h-px bg-gold/60" />
               <span className="text-gold text-sm">&#9670;</span>

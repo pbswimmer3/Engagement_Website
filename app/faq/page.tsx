@@ -5,24 +5,24 @@ import { useState } from 'react'
 // ─── ADD / EDIT YOUR FAQ ITEMS HERE ──────────────────────────────────────────
 const FAQS = [
   {
-    q: 'What should I wear?',
-    a: 'Smart casual or semi-formal attire is recommended. Think cocktail dress or dress shirt with trousers. We want everyone to feel comfortable and celebrate in style!',
+    q: 'What is the dress code?',
+    a: 'We would greatly appreciate adherence to the dress code:\n• Men: Western Formal\n• Women: Indian or Indo-Western\n\nPlease avoid wearing outfits which are all-gold.',
+  },
+  {
+    q: 'Are you accepting gifts?',
+    a: 'No boxed gifts, please. If you\u2019d like to give us a gift, a Venmo contribution would be greatly appreciated.',
+  },
+  {
+    q: 'Will food be served?',
+    a: 'Yes, we will be serving a wide spread of Indian cuisine in both vegetarian and non-vegetarian options, complemented by an open bar.',
   },
   {
     q: 'Is parking available?',
-    a: 'Yes parking will be available, though we encourage guests to uber.',
-  },
-  {
-    q: 'Will food and drinks be served?',
-    a: 'Of course, we have a full catering providing dinner and an open bar throughout the evening.[Add catering details — e.g. "Yes! We will be serving a selection of canapés, a sit-down dinner, and drinks throughout the evening."]',
-  },
-  {
-    q: 'Can I bring a plus one?',
-    a: 'Our venue has limited capacity, so we kindly ask that only guests named on the invitation attend. If you have any questions, please reach out to us directly.',
+    a: 'Yes, there is a lot of free self-parking available at the venue.',
   },
   {
     q: 'When is the RSVP deadline?',
-    a: 'Please RSVP by April 1st, 2026 so we can plan accordingly. You can RSVP on this website!"]',
+    a: 'If you have extenuating circumstances and cannot confirm by May 1st, please let us know.',
   },
 ]
 // ─────────────────────────────────────────────────────────────────────────────
@@ -74,7 +74,7 @@ export default function FAQPage() {
               {open === i && (
                 <div className="px-6 pb-6">
                   <div className="border-t border-gold/15 pt-4">
-                    <p className="font-sans text-sm text-dark/60 leading-relaxed">
+                    <p className="font-sans text-sm text-dark/60 leading-relaxed whitespace-pre-line">
                       {item.a}
                     </p>
                   </div>

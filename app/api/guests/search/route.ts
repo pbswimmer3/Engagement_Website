@@ -23,12 +23,12 @@ export async function POST(req: NextRequest) {
       words.flatMap((w) => [
         supabase
           .from('guests')
-          .select('id, first_name, last_name')
+          .select('id, first_name, last_name, invitation_group')
           .ilike('first_name', `%${w}%`)
           .limit(8),
         supabase
           .from('guests')
-          .select('id, first_name, last_name')
+          .select('id, first_name, last_name, invitation_group')
           .ilike('last_name', `%${w}%`)
           .limit(8),
       ])

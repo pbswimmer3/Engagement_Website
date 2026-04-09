@@ -38,7 +38,7 @@ export default function PhotoGallery() {
         {track.map((src, i) => (
           <div
             key={i}
-            className={`relative w-[28rem] h-[36rem] flex-shrink-0 rounded-2xl overflow-hidden shadow-md bg-gradient-to-br ${
+            className={`relative w-[16rem] h-[20rem] sm:w-[22rem] sm:h-[28rem] md:w-[28rem] md:h-[36rem] flex-shrink-0 rounded-2xl overflow-hidden shadow-md bg-gradient-to-br ${
               GRADIENTS[i % GRADIENTS.length]
             }`}
           >
