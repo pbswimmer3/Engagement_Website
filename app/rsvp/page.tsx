@@ -243,7 +243,7 @@ export default function RSVPPage() {
         {/* ── Step 1: Search ── */}
         {step === 'search' && (
           <div className="space-y-6">
-            <p className="font-serif text-xl text-center text-dark/55 italic">
+            <p className="font-serif text-xl text-center text-dark/90 italic">
               Search for your name to get started. Please RSVP by May 1st. If you have any trouble, contact us directly!
             </p>
             <div className="flex gap-3">
