@@ -10,7 +10,7 @@ const FAQS = [
   },
   {
     q: 'Are you accepting gifts?',
-    a: 'No boxed gifts, please. If you\u2019d like to give us a gift, a Venmo contribution would be greatly appreciated.',
+    a: 'We are so grateful to have you celebrate this milestone with us. If you are thinking of bringing a gift, we humbly request no boxed gifts.',
   },
   {
     q: 'Will food be served?',
