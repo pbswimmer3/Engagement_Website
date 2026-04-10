@@ -44,7 +44,7 @@ export default function FAQPage() {
             <span className="block w-16 h-px bg-gold/60" />
           </div>
           <p className="font-serif italic text-navy/90 text-lg">
-            Have a question not answered here? Just reach out.
+            Have a question not answered here? Please reach out.
           </p>
         </div>
 
