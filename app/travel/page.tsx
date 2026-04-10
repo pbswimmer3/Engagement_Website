@@ -10,7 +10,7 @@ const VENUE = {
   // 2. Click Share → Embed a map
   // 3. Copy the src="..." value from the <iframe> code shown
   // 4. Paste it below
-  googleMapsEmbedUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6609.781279245813!2d-117.56362442301271!3d34.072317573149455!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80c335021953e55b%3A0x6e95cea2da345ea7!2sMajestic%20Banquet%20%26%20Events!5e0!3m2!1sen!2sus!4v1773018542339!5m2!1sen!2sus',
+  googleMapsEmbedUrl: 'src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6609.8024452557875!2d-117.56088799999999!3d34.0720463!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80c335021953e55b%3A0x6e95cea2da345ea7!2sMajestic%20Banquet%20%26%20Events!5e0!3m2!1sen!2sus!4v1775793755835!5m2!1sen!2sus" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>',
 }
 
 const HOTELS = [

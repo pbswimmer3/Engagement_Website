@@ -335,7 +335,7 @@ export default function RSVPPage() {
         {step === 'verify' && selected && (
           <div className="space-y-6">
             <div className="text-center">
-              <p className="font-serif text-xl text-dark/70">
+              <p className="font-serif text-xl text-dark/90">
                 Hi,{' '}
                 <span className="text-navy">
                   {selected.first_name} {selected.last_name}
