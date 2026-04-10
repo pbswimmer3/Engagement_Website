@@ -28,8 +28,8 @@ export const viewport: Viewport = {
 }
 
 export const metadata: Metadata = {
-  title: "Prad & Aanya — Engagement",
-  description: "Join us to celebrate the engagement of Prad and Aanya.",
+  title: "Aanya & Prad — Engagement",
+  description: "Join us to celebrate the engagement of Aanya and Prad.",
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

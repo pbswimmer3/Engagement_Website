@@ -37,7 +37,7 @@ export default function PasswordPage() {
       </p>
 
       <h1 className="font-script text-5xl sm:text-6xl text-rose leading-none mb-3">
-        Prad &amp; Aanya
+        Aanya &amp; Prad
       </h1>
 
       <div className="flex items-center gap-4 mb-8">
