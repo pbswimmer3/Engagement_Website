@@ -1,10 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase'
+import { getInviteGroupFromRequest } from '@/lib/invite-group'
 
 const VALID_STATUSES = ['attending', 'not_attending']
 
 export async function POST(req: NextRequest) {
   try {
+    const inviteGroup = getInviteGroupFromRequest(req)
+    if (!inviteGroup) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
     const { id, email, rsvps } = await req.json()
     // rsvps: Array<{ guest_id: string; rsvp_status: 'attending' | 'not_attending' }>
 
@@ -21,18 +27,19 @@ export async function POST(req: NextRequest) {
 
     const supabase = createAdminClient()
 
-    // Re-verify email: the authenticated guest must belong to the group
+    // Re-verify the authenticated guest, constrained to the caller's invite_group.
     const { data: authGuest, error: findError } = await supabase
       .from('guests')
       .select('id, email, invitation_group')
       .eq('id', id)
+      .eq('invite_group', inviteGroup)
       .single()
 
     if (findError || !authGuest) {
       return NextResponse.json({ error: 'Guest not found' }, { status: 404 })
     }
 
-    // Verify the email matches this guest or a group member
+    // Verify the email matches this guest or a group member (same invite_group)
     let emailMatched = false
     if (authGuest.email && authGuest.email.toLowerCase() === email.toLowerCase()) {
       emailMatched = true
@@ -40,6 +47,7 @@ export async function POST(req: NextRequest) {
       const { data: groupEmails } = await supabase
         .from('guests')
         .select('email')
+        .eq('invite_group', inviteGroup)
         .eq('invitation_group', authGuest.invitation_group)
         .not('email', 'is', null)
 
@@ -54,12 +62,14 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    // Build set of allowed guest IDs (only this guest + their group members)
+    // Build set of allowed guest IDs (only this guest + their group members,
+    // all scoped to the same invite_group).
     const allowedIds = new Set<string>()
     if (authGuest.invitation_group) {
       const { data: groupMembers } = await supabase
         .from('guests')
         .select('id')
+        .eq('invite_group', inviteGroup)
         .eq('invitation_group', authGuest.invitation_group)
 
       groupMembers?.forEach((m) => allowedIds.add(m.id))

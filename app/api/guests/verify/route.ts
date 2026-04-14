@@ -1,8 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase'
+import { getInviteGroupFromRequest } from '@/lib/invite-group'
 
 export async function POST(req: NextRequest) {
   try {
+    const inviteGroup = getInviteGroupFromRequest(req)
+    if (!inviteGroup) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
     const { id, email } = await req.json()
 
     if (!id || !email) {
@@ -11,11 +17,12 @@ export async function POST(req: NextRequest) {
 
     const supabase = createAdminClient()
 
-    // Look up the selected guest
+    // Look up the selected guest, constrained to the caller's invite_group.
     const { data: guest, error } = await supabase
       .from('guests')
       .select('id, email, rsvp_status, invitation_group')
       .eq('id', id)
+      .eq('invite_group', inviteGroup)
       .single()
 
     if (error || !guest) {
@@ -23,16 +30,16 @@ export async function POST(req: NextRequest) {
     }
 
     // Verify email: check if the provided email matches this guest's email,
-    // OR any email in the same invitation group
+    // OR any email in the same invitation group (also scoped to invite_group).
     let emailMatched = false
 
     if (guest.email && guest.email.toLowerCase() === email.toLowerCase()) {
       emailMatched = true
     } else if (guest.invitation_group) {
-      // Check if the email belongs to any member of the same group
       const { data: groupMembers } = await supabase
         .from('guests')
         .select('email')
+        .eq('invite_group', inviteGroup)
         .eq('invitation_group', guest.invitation_group)
         .not('email', 'is', null)
 
@@ -54,6 +61,7 @@ export async function POST(req: NextRequest) {
       const { data: members } = await supabase
         .from('guests')
         .select('id, first_name, last_name, rsvp_status')
+        .eq('invite_group', inviteGroup)
         .eq('invitation_group', guest.invitation_group)
         .order('first_name')
 

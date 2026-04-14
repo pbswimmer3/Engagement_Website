@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { isInviteGroup } from '@/lib/invite-group'
 
 const PUBLIC_PATHS = ['/password', '/api/auth', '/favicon.ico']
 const PUBLIC_PREFIXES = ['/_next/', '/assets/', '/photos/']
@@ -13,7 +14,10 @@ export function middleware(request: NextRequest) {
     return NextResponse.next()
   }
 
-  if (request.cookies.get('site-auth')?.value === 'ok') {
+  // The cookie value is the invite_group slug (praanya | jain | biswas).
+  // Any other value — including the legacy 'ok' — is treated as unauthenticated,
+  // which also locks the RSVP page until a group is stored.
+  if (isInviteGroup(request.cookies.get('site-auth')?.value)) {
     return NextResponse.next()
   }
 
